@@ -1,30 +1,25 @@
 package com.android.eindopdracht;
 
-import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
 
-public class MainActivity extends ActionBarActivity {
+public class ProjectsActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_projects);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        setTitle("BigHours");
-        return super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu_projects, menu);
+        return true;
     }
 
     @Override
@@ -36,22 +31,9 @@ public class MainActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Toast.makeText(getApplicationContext(), "Settings", Toast.LENGTH_LONG).show();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    /** Called when the user clicks the about button */
-    public void showAbout(View view){
-        Intent intent = new Intent(this, AboutActivity.class);
-        startActivity(intent);
-    }
-
-    /** Called when the user clicks the about button */
-    public void showProjects(View view){
-        Intent intent = new Intent(this, ProjectsActivity.class);
-        startActivity(intent);
     }
 }
