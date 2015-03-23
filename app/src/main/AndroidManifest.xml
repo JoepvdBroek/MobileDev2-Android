@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.android.eindopdracht" >
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -17,13 +19,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AboutActivity"
-            android:label="@string/title_activity_about" >
-        </activity>
-        <activity
-            android:name=".ProjectsActivity"
-            android:label="@string/title_activity_projects" >
+            android:name=".DisplayActivity"
+            android:label="@string/title_activity_display" >
         </activity>
     </application>
-
 </manifest>

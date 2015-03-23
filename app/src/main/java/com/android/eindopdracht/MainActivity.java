@@ -3,11 +3,24 @@ package com.android.eindopdracht;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -23,7 +36,7 @@ public class MainActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        setTitle("BigHours");
+        setTitle("Eet.nu");
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -44,14 +57,14 @@ public class MainActivity extends ActionBarActivity {
     }
 
     /** Called when the user clicks the about button */
-    public void showAbout(View view){
-        Intent intent = new Intent(this, AboutActivity.class);
-        startActivity(intent);
-    }
+    public void search(View view) throws IOException {
 
-    /** Called when the user clicks the about button */
-    public void showProjects(View view){
-        Intent intent = new Intent(this, ProjectsActivity.class);
+        EditText editText = (EditText)findViewById(R.id.editText);
+        String query = editText.getText().toString().trim();
+
+        Intent intent = new Intent(this, DisplayActivity.class);
+        intent.putExtra("query", query);
         startActivity(intent);
+
     }
 }
