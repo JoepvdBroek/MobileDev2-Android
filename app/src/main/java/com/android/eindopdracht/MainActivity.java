@@ -1,10 +1,13 @@
 package com.android.eindopdracht;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -37,72 +40,14 @@ public class MainActivity extends ActionBarActivity {
 
         list = (ListView)findViewById(R.id.list);
         venuesList = new ArrayList<Venue>();
-
-        new VenueAsynTask().execute("http://api.eet.nu/venues?query=pizza&geolocation=51.520654,5.047317&max_distance=5");
     }
 
-    public class VenueAsynTask extends AsyncTask<String, Void, Boolean>{
+    public void search(View view){
+        EditText editText = (EditText)findViewById(R.id.editText);
+        String query = editText.getText().toString().trim();
 
-        @Override
-        protected Boolean doInBackground(String... urls) {
-            try {
-
-                HttpClient client = new DefaultHttpClient();
-                HttpPost post = new HttpPost(urls[0]);
-                HttpResponse response = client.execute(post);
-
-                // StatusLine stat = response.getStatusLine();
-                int status = response.getStatusLine().getStatusCode();
-
-                if (status == 200) {
-                    HttpEntity entity = response.getEntity();
-                    String data = EntityUtils.toString(entity);
-
-                    JSONObject jsonO = new JSONObject(data);
-                    JSONArray jArray = jsonO.getJSONArray("results");
-
-                    for (int i = 0; i < jArray.length(); i++) {
-                        JSONObject object = jArray.getJSONObject(i);
-
-                        Venue venue = new Venue();
-
-                        venue.setName(object.getString("name"));
-                        venue.setCategory(object.getString("category"));
-                        JSONObject address = object.getJSONObject("address");
-                        venue.setStreetname(address.getString("street"));
-                        venue.setZipcode(address.getString("zipcode"));
-                        venue.setCity(address.getString("city"));
-
-                        venuesList.add(venue);
-                    }
-                    return true;
-                }
-
-            } catch (ClientProtocolException e){
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            return false;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean result) {
-            super.onPostExecute(result);
-
-            if(result == false){
-                //show message that data was not parsed
-                Toast toast = Toast.makeText(getApplicationContext(), "data was not parsed", Toast.LENGTH_LONG);
-                toast.show();
-            } else {
-                VenueAdapter adapter = new VenueAdapter(getApplicationContext(), R.layout.row, venuesList);
-                list.setAdapter(adapter);
-            }
-
-
-        }
+        Intent intent = new Intent(this, DisplayActivity.class);
+        intent.putExtra("query", query);
+        startActivity(intent);
     }
 }
