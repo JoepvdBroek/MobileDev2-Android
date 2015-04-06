@@ -1,70 +1,108 @@
 package com.android.eindopdracht;
 
-import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
+import java.util.ArrayList;
 
 
 public class MainActivity extends ActionBarActivity {
+
+    ListView list;
+    VenueAdapter adapter;
+    ArrayList<Venue> venuesList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        list = (ListView)findViewById(R.id.list);
+        venuesList = new ArrayList<Venue>();
+
+        new VenueAsynTask().execute("http://api.eet.nu/venues?query=pizza&geolocation=51.520654,5.047317&max_distance=5");
     }
 
+    public class VenueAsynTask extends AsyncTask<String, Void, Boolean>{
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        setTitle("Eet.nu");
-        return super.onCreateOptionsMenu(menu);
-    }
+        @Override
+        protected Boolean doInBackground(String... urls) {
+            try {
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+                HttpClient client = new DefaultHttpClient();
+                HttpPost post = new HttpPost(urls[0]);
+                HttpResponse response = client.execute(post);
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Toast.makeText(getApplicationContext(), "Settings", Toast.LENGTH_LONG).show();
-            return true;
+                // StatusLine stat = response.getStatusLine();
+                int status = response.getStatusLine().getStatusCode();
+
+                if (status == 200) {
+                    HttpEntity entity = response.getEntity();
+                    String data = EntityUtils.toString(entity);
+
+                    JSONObject jsonO = new JSONObject(data);
+                    JSONArray jArray = jsonO.getJSONArray("results");
+
+                    for (int i = 0; i < jArray.length(); i++) {
+                        JSONObject object = jArray.getJSONObject(i);
+
+                        Venue venue = new Venue();
+
+                        venue.setName(object.getString("name"));
+                        venue.setCategory(object.getString("category"));
+                        JSONObject address = object.getJSONObject("address");
+                        venue.setStreetname(address.getString("street"));
+                        venue.setZipcode(address.getString("zipcode"));
+                        venue.setCity(address.getString("city"));
+
+                        venuesList.add(venue);
+                    }
+                    return true;
+                }
+
+            } catch (ClientProtocolException e){
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return false;
         }
 
-        return super.onOptionsItemSelected(item);
-    }
+        @Override
+        protected void onPostExecute(Boolean result) {
+            super.onPostExecute(result);
 
-    /** Called when the user clicks the about button */
-    public void search(View view) throws IOException {
+            if(result == false){
+                //show message that data was not parsed
+                Toast toast = Toast.makeText(getApplicationContext(), "data was not parsed", Toast.LENGTH_LONG);
+                toast.show();
+            } else {
+                VenueAdapter adapter = new VenueAdapter(getApplicationContext(), R.layout.row, venuesList);
+                list.setAdapter(adapter);
+            }
 
-        EditText editText = (EditText)findViewById(R.id.editText);
-        String query = editText.getText().toString().trim();
 
-        Intent intent = new Intent(this, DisplayActivity.class);
-        intent.putExtra("query", query);
-        startActivity(intent);
-
+        }
     }
 }
