@@ -57,6 +57,5 @@ public class VenueAdapter extends ArrayAdapter<Venue> {
         public TextView tvStreetname;
         public TextView tvZipcode;
         public TextView tvCity;
-
     }
 }

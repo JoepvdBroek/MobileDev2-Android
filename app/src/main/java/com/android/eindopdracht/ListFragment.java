@@ -1,17 +1,14 @@
 package com.android.eindopdracht;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.app.Fragment;
 import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.http.HttpEntity;
@@ -28,46 +25,21 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 
+public class ListFragment extends Fragment {
 
-public class DisplayActivity extends Activity implements ListFragment.OnItemSelectedListener{
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_display);
-
-        /*String query = getIntent().getExtras().getString("query");
-        Toast.makeText(getApplicationContext(), query, Toast.LENGTH_LONG).show();*/
-    }
-
-    @Override
-    public void onItemSelected(int venueId) {
-        DetailFragment fragment = (DetailFragment) getFragmentManager()
-                .findFragmentById(R.id.detailFragment);
-        if (fragment != null && fragment.isInLayout()) {
-            fragment.setDetails(venueId);
-        } else {
-            Intent intent = new Intent(getApplicationContext(),
-                    DetailActivity.class);
-            intent.putExtra("id", venueId);
-            startActivity(intent);
-
-        }
-    }
-
-    /*ListView list;
+    ListView list;
     VenueAdapter adapter;
     ArrayList<Venue> venuesList;
+    private OnItemSelectedListener listener;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_display);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_list, container, false);
 
-        String query = getIntent().getExtras().getString("query");
-        Toast.makeText(getApplicationContext(), query, Toast.LENGTH_LONG).show();
+        String query = getActivity().getIntent().getExtras().getString("query");
+        Toast.makeText(getActivity().getApplicationContext(), query, Toast.LENGTH_LONG).show();
 
-        list = (ListView)findViewById(R.id.list);
+        list = (ListView)view.findViewById(R.id.list);
         venuesList = new ArrayList<Venue>();
 
         String url = "http://api.eet.nu/venues?query="+query+"&geolocation=51.520654,5.047317&max_distance=5";
@@ -78,53 +50,40 @@ public class DisplayActivity extends Activity implements ListFragment.OnItemSele
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                // getting values from selected ListItem
-                *//*String name = ((TextView) view.findViewById(R.id.tvName))
-                        .getText().toString();*//*
-
-
                 int venueId = venuesList.get(position).getId();
 
-                Toast.makeText(getApplicationContext(), String.valueOf(venueId), Toast.LENGTH_LONG).show();
-
-                // Starting single contact activity
-                *//*Intent in = new Intent(getApplicationContext(),
-                        SingleContactActivity.class);
-                in.putExtra("name", name);
-                in.putExtra("category", category);
-                in.putExtra("streetname", streetname);
-                startActivity(in);*//*
-
+                updateDetail(venueId);
             }
         });
 
-        new VenueAsynTask().execute(url);
+        new VenueAsyncTask().execute(url);
+        return view;
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_display, menu);
-        return true;
+    public interface OnItemSelectedListener {
+        public void onItemSelected(int venueId);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (activity instanceof OnItemSelectedListener) {
+            listener = (OnItemSelectedListener) activity;
+        } else {
+            throw new ClassCastException(activity.toString()
+                    + " must implemenet MyListFragment.OnItemSelectedListener");
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
-    public class VenueAsynTask extends AsyncTask<String, Void, Boolean> {
+
+    // May also be triggered from the Activity
+    public void updateDetail(int venueId) {
+        // Send data to Activity
+        Toast.makeText(getActivity().getApplicationContext(), String.valueOf(venueId), Toast.LENGTH_LONG).show();
+        listener.onItemSelected(venueId);
+    }
+
+    public class VenueAsyncTask extends AsyncTask<String, Void, Boolean> {
 
         @Override
         protected Boolean doInBackground(String... urls) {
@@ -179,14 +138,14 @@ public class DisplayActivity extends Activity implements ListFragment.OnItemSele
 
             if(result == false){
                 //show message that data was not parsed
-                Toast toast = Toast.makeText(getApplicationContext(), "data was not parsed", Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(getActivity().getApplicationContext(), "data was not parsed", Toast.LENGTH_LONG);
                 toast.show();
             } else {
-                VenueAdapter adapter = new VenueAdapter(getApplicationContext(), R.layout.row, venuesList);
+                VenueAdapter adapter = new VenueAdapter(getActivity().getApplicationContext(), R.layout.row, venuesList);
                 list.setAdapter(adapter);
             }
 
 
         }
-    }*/
+    }
 }
