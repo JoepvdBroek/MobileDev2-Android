@@ -53,14 +53,13 @@ public class DisplayActivity extends ActionBarActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 // getting values from selected ListItem
-                String name = ((TextView) view.findViewById(R.id.tvName))
-                        .getText().toString();
-                String category = ((TextView) view.findViewById(R.id.tvCategory))
-                        .getText().toString();
-                String streetname = ((TextView) view.findViewById(R.id.tvStreetname))
-                        .getText().toString();
+                /*String name = ((TextView) view.findViewById(R.id.tvName))
+                        .getText().toString();*/
 
-                Toast.makeText(getApplicationContext(), name, Toast.LENGTH_LONG).show();
+
+                int venueId = venuesList.get(position).getId();
+
+                Toast.makeText(getApplicationContext(), String.valueOf(venueId), Toast.LENGTH_LONG).show();
 
                 // Starting single contact activity
                 /*Intent in = new Intent(getApplicationContext(),
@@ -124,6 +123,7 @@ public class DisplayActivity extends ActionBarActivity {
 
                         Venue venue = new Venue();
 
+                        venue.setId(object.getInt("id"));
                         venue.setName(object.getString("name"));
                         venue.setCategory(object.getString("category"));
                         JSONObject address = object.getJSONObject("address");

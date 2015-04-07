@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 public class VenueAdapter extends ArrayAdapter<Venue> {
 
-    ArrayList<Venue> actorList;
+    ArrayList<Venue> venuesList;
     LayoutInflater vi;
     int Resource;
     ViewHolder holder;
@@ -23,7 +23,7 @@ public class VenueAdapter extends ArrayAdapter<Venue> {
         super(context, resource, objects);
         vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         Resource = resource;
-        actorList = objects;
+        venuesList = objects;
     }
 
     @Override
@@ -42,11 +42,11 @@ public class VenueAdapter extends ArrayAdapter<Venue> {
         } else {
             holder = (ViewHolder) v.getTag();
         }
-        holder.tvName.setText(actorList.get(position).getName());
-        holder.tvCategory.setText(actorList.get(position).getCategory());
-        holder.tvStreetname.setText(actorList.get(position).getStreetname());
-        holder.tvZipcode.setText(actorList.get(position).getZipcode());
-        holder.tvCity.setText(actorList.get(position).getCity());
+        holder.tvName.setText(venuesList.get(position).getName());
+        holder.tvCategory.setText(venuesList.get(position).getCategory());
+        holder.tvStreetname.setText(venuesList.get(position).getStreetname());
+        holder.tvZipcode.setText(venuesList.get(position).getZipcode());
+        holder.tvCity.setText(venuesList.get(position).getCity());
         return v;
 
     }

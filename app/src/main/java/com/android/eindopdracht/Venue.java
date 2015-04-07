@@ -4,6 +4,8 @@ package com.android.eindopdracht;
  * Created by Joep on 2-4-2015.
  */
 public class Venue {
+
+   private int id;
     private String name;
     private String category;
     private String streetname;
@@ -54,7 +56,13 @@ public class Venue {
         this.zipcode = zipcode;
     }
 
+    public int getId() {
+        return id;
+    }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 
 
 }
