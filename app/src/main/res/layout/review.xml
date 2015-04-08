@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/tvRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5"
+                android:textColor="#00B800"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TextView
+                android:id="@+id/tvAuthor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nico"
+                android:textColor="#166CED"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/tvBody"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#D64530"
+                android:text="Wat een drama, vorige week vrijdag rond 17:00 uur hier geweest, wat een puinhoop daar binnen. De pizzabakker heeft kipkluifjers warm gemaakt, en likt zijn vingers er bij af (letterlijk) om vervolgens mijn pizza te snijden en in te pakken... de tent wordt gerund door en voor studenten, zo te zien, maar mij zie je daar niet meer. 16 euro voor een pizza en 2 lauwe blikjes sinas." />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

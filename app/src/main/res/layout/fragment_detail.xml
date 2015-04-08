@@ -49,8 +49,24 @@
                 android:textColor="#D64530"
                 android:text="" />
 
+            <TextView
+                android:id="@+id/tvReview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <ListView
+                android:id="@+id/list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/review"
+                android:layout_gravity="center" />
+
         </LinearLayout>
 
     </LinearLayout>
+
+
 
 </FrameLayout>
