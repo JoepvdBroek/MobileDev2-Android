@@ -17,7 +17,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="5"
-                android:textColor="#00B800"
+                android:textColor="#000000"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <TextView
@@ -25,14 +25,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Nico"
-                android:textColor="#166CED"
+                android:textColor="#000000"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
                 android:id="@+id/tvBody"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#D64530"
+                android:textColor="#666666"
                 android:text="Wat een drama, vorige week vrijdag rond 17:00 uur hier geweest, wat een puinhoop daar binnen. De pizzabakker heeft kipkluifjers warm gemaakt, en likt zijn vingers er bij af (letterlijk) om vervolgens mijn pizza te snijden en in te pakken... de tent wordt gerund door en voor studenten, zo te zien, maar mij zie je daar niet meer. 16 euro voor een pizza en 2 lauwe blikjes sinas." />
 
         </LinearLayout>

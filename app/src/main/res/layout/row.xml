@@ -19,39 +19,39 @@
                 android:id="@+id/tvName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Pizza hotspot"
-                android:textColor="#00B800"
+                android:text=""
+                android:textColor="#000000"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <TextView
                 android:id="@+id/tvCategory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Pizza"
-                android:textColor="#166CED"
+                android:text=""
+                android:textColor="#666666"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
                 android:id="@+id/tvStreetname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#D64530"
-                android:text="Doelenstraat 160" />
+                android:text=""
+                android:textColor="#666666"/>
 
             <TextView
                 android:id="@+id/tvZipcode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="5051 TG"
-                android:textColor="#D64530"
+                android:text=""
+                android:textColor="#666666"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <TextView
                 android:id="@+id/tvCity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#D64530"
-                android:text="United States" />
+                android:text=""
+                android:textColor="#666666"/>
 
         </LinearLayout>
 

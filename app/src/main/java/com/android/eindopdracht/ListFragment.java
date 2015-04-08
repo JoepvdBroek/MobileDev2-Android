@@ -43,7 +43,7 @@ public class ListFragment extends Fragment {
         venuesList = new ArrayList<Venue>();
 
         String url = "http://api.eet.nu/venues?query="+query+"&geolocation=51.520654,5.047317&max_distance=5";
-
+        url = url.replaceAll(" ", "%20");
         // Listview on item click listener
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
