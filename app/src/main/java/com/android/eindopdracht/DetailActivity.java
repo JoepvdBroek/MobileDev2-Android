@@ -2,10 +2,16 @@ package com.android.eindopdracht;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.Toast;
 
-public class DetailActivity extends Activity {
+public class DetailActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,5 +31,28 @@ public class DetailActivity extends Activity {
                     .findFragmentById(R.id.detailFragment);
             detailFragment.setDetails(venueId);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        //inflate the menu items for use in the action bar
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_detail, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        // handle presses on the action bar items
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            Toast.makeText(getApplicationContext(), "Settings", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
