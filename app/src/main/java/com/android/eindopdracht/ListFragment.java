@@ -37,12 +37,14 @@ public class ListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
 
         String query = getActivity().getIntent().getExtras().getString("query");
-        Toast.makeText(getActivity().getApplicationContext(), query, Toast.LENGTH_LONG).show();
+        String radius = getActivity().getIntent().getExtras().getString("radius");
+        String latitude = getActivity().getIntent().getExtras().getString("latitute");
+        String longitude = getActivity().getIntent().getExtras().getString("longitude");
 
         list = (ListView)view.findViewById(R.id.list);
         venuesList = new ArrayList<Venue>();
 
-        String url = "http://api.eet.nu/venues?query="+query+"&geolocation=51.520654,5.047317&max_distance=5";
+        String url = "http://api.eet.nu/venues?query="+query+"&geolocation="+longitude+","+latitude+"&max_distance="+radius;
         url = url.replaceAll(" ", "%20");
         // Listview on item click listener
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -138,7 +140,7 @@ public class ListFragment extends Fragment {
 
             if(result == false){
                 //show message that data was not parsed
-                Toast toast = Toast.makeText(getActivity().getApplicationContext(), "data was not parsed", Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(getActivity().getApplicationContext(), "venues was not parsed", Toast.LENGTH_LONG);
                 toast.show();
             } else {
                 VenueAdapter adapter = new VenueAdapter(getActivity().getApplicationContext(), R.layout.row, venuesList);

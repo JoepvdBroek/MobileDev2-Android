@@ -3,9 +3,11 @@ package com.android.eindopdracht;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,63 +15,67 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.IOException;
-import java.text.ParseException;
-import java.util.ArrayList;
+public class MainActivity extends ActionBarActivity implements LocationListener {
 
-
-public class MainActivity extends ActionBarActivity {
-
-    TextView tvQuery;
+    TextView evQuery;
+    TextView evRadius;
     SharedPreferences sharedPreferences;
+
+    private String latitute;
+    private String longitude;
+    private LocationManager locationManager;
+    private String provider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        tvQuery = (TextView) findViewById(R.id.editText);
+        // Get the location manager
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        // Define the criteria how to select the location provider -> use
+        // default
+        Criteria criteria = new Criteria();
+        provider = locationManager.getBestProvider(criteria, false);
+
+        evQuery = (TextView) findViewById(R.id.query);
+        evRadius = (TextView) findViewById(R.id.radius);
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
         String settingQuery = sharedPreferences.getString("default_query", "");
         Toast.makeText(getApplicationContext(), settingQuery, Toast.LENGTH_LONG).show();
 
-        tvQuery.setText(settingQuery);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        String settingQuery = sharedPreferences.getString("default_query", "");
-        Toast.makeText(getApplicationContext(), settingQuery, Toast.LENGTH_LONG).show();
-
-        tvQuery.setText(settingQuery);
+        evQuery.setText(settingQuery);
     }
 
     public void search(View view){
-        EditText editText = (EditText)findViewById(R.id.editText);
-        String query = editText.getText().toString().trim();
+        String query = evQuery.getText().toString().trim();
+        String radius = evRadius.getText().toString().trim();
+        Location location = locationManager.getLastKnownLocation(provider);
 
-        Intent intent = new Intent(this, DisplayActivity.class);
-        intent.putExtra("query", query);
-        startActivity(intent);
+        if((query.length() > 0) && (radius.length() > 0)){
+            if (location != null) {
+                System.out.println("Provider " + provider + " has been selected.");
+                onLocationChanged(location);
+
+                Intent intent = new Intent(this, DisplayActivity.class);
+                intent.putExtra("longitude", longitude);
+                intent.putExtra("latitute", latitute);
+                intent.putExtra("query", query);
+                intent.putExtra("radius", radius);
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, "GPS is niet toegepast", Toast.LENGTH_LONG).show();
+            }
+        } else {
+            Toast.makeText(this, "Vul de velden in", Toast.LENGTH_LONG).show();
+        }
+
     }
 
     @Override
@@ -96,4 +102,46 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
+    /* Request updates at startup */
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        String settingQuery = sharedPreferences.getString("default_query", "");
+        Toast.makeText(getApplicationContext(), settingQuery, Toast.LENGTH_LONG).show();
+
+        evQuery.setText(settingQuery);
+
+        locationManager.requestLocationUpdates(provider, 400, 1, this);
+    }
+
+    /* Remove the locationlistener updates when Activity is paused */
+    @Override
+    protected void onPause() {
+        super.onPause();
+        locationManager.removeUpdates(this);
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        latitute = String.valueOf(location.getLatitude());
+        longitude = String.valueOf(location.getLongitude());
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+        Toast.makeText(this, "Enabled new provider " + provider, Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+        Toast.makeText(this, "Disabled provider " + provider, Toast.LENGTH_SHORT).show();
+    }
 }
