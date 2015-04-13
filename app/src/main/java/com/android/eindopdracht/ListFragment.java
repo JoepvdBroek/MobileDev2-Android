@@ -81,7 +81,6 @@ public class ListFragment extends Fragment {
     // May also be triggered from the Activity
     public void updateDetail(int venueId) {
         // Send data to Activity
-        Toast.makeText(getActivity().getApplicationContext(), String.valueOf(venueId), Toast.LENGTH_LONG).show();
         listener.onItemSelected(venueId);
     }
 

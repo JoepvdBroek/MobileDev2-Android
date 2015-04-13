@@ -42,7 +42,7 @@ public class ReviewAdapter extends ArrayAdapter<Review> {
         }
         holder.tvAuthor.setText(reviewsList.get(position).getAuthor());
         holder.tvBody.setText(reviewsList.get(position).getBody());
-        holder.tvRating.setText(String.valueOf(reviewsList.get(position).getRating()));
+        holder.tvRating.setText("Rating: "+String.valueOf(reviewsList.get(position).getRating()));
         return v;
 
     }

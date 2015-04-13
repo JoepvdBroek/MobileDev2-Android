@@ -2,42 +2,22 @@ package com.android.eindopdracht;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
-
-public class DisplayActivity extends ActionBarActivity implements ListFragment.OnItemSelectedListener{
+public class DisplayActivity extends Activity implements ListFragment.OnItemSelectedListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display);
 
-        /*String query = getIntent().getExtras().getString("query");
-        Toast.makeText(getApplicationContext(), query, Toast.LENGTH_LONG).show();*/
+        /*ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);*/
     }
 
     @Override
@@ -77,4 +57,6 @@ public class DisplayActivity extends ActionBarActivity implements ListFragment.O
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }
