@@ -1,6 +1,8 @@
 package com.android.eindopdracht;
 
 import android.app.Fragment;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -31,6 +33,8 @@ public class DetailFragment extends Fragment {
     ListView list;
     VenueAdapter adapter;
     ArrayList<Review> reviewsList;
+
+    String phoneNumber;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -77,6 +81,8 @@ public class DetailFragment extends Fragment {
                         venue.setId(object.getInt("id"));
                         venue.setName(object.getString("name"));
                         venue.setCategory(object.getString("category"));
+                        phoneNumber = object.getString("telephone");
+                        venue.setPhoneNumber(object.getString("telephone"));
                         JSONObject address = object.getJSONObject("address");
                         venue.setStreetname(address.getString("street"));
                         venue.setZipcode(address.getString("zipcode"));
@@ -110,12 +116,28 @@ public class DetailFragment extends Fragment {
                 TextView tvStreetname = (TextView) getView().findViewById(R.id.tvStreetname);
                 TextView tvZipcode = (TextView) getView().findViewById(R.id.tvZipcode);
                 TextView tvCity = (TextView) getView().findViewById(R.id.tvCity);
+                TextView tvPhoneNumber = (TextView) getView().findViewById(R.id.tvPhoneNumber);
+                tvPhoneNumber.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        TextView tvPhoneNumber = (TextView) v.findViewById(R.id.tvPhoneNumber);
+                        String phoneNumber = String.valueOf(tvPhoneNumber.getText());
+                        Intent intent = new Intent(Intent.ACTION_DIAL);
+                        intent.setData(Uri.parse("tel:" + phoneNumber));
+                        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                            startActivity(intent);
+                        }
+
+                    }
+                });
 
                 tvName.setText(venue.getName());
                 tvCategory.setText(venue.getCategory());
                 tvStreetname.setText(venue.getStreetname());
                 tvZipcode.setText(venue.getZipcode());
                 tvCity.setText(venue.getCity());
+                tvPhoneNumber.setText(venue.getPhoneNumber());
             }
         }
     }
@@ -175,12 +197,14 @@ public class DetailFragment extends Fragment {
                 Toast toast = Toast.makeText(getActivity().getApplicationContext(), "reviews was not parsed", Toast.LENGTH_LONG);
                 toast.show();
             } else {
+                TextView tvReview = (TextView) getView().findViewById(R.id.tvReview);
                 if(reviewsList.size() > 0){
-                    TextView tvReview = (TextView) getView().findViewById(R.id.tvReview);
                     tvReview.setText("Reviews:");
 
                     ReviewAdapter adapter = new ReviewAdapter(getActivity().getApplicationContext(), R.layout.review, reviewsList);
                     list.setAdapter(adapter);
+                } else {
+                    tvReview.setText("Geen reviews aanwezig");
                 }
 
             }

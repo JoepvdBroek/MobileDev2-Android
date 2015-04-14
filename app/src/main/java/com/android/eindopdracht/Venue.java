@@ -11,9 +11,18 @@ public class Venue {
     private String streetname;
     private String zipcode;
     private String city;
+    private String phoneNumber;
 
     public Venue() {
 
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getCity() {
