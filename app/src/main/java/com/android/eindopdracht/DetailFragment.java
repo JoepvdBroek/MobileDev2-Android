@@ -167,7 +167,12 @@ public class DetailFragment extends Fragment {
 
                         Review review = new Review();
 
-                        review.setRating(object.getInt("rating"));
+                        if (!object.getString("rating").equals("null")) {
+                            review.setRating(object.getInt("rating"));
+                        } else {
+                            review.setRating(0);
+                        }
+
                         review.setBody(object.getString("body"));
                         JSONObject author = object.getJSONObject("author");
                         review.setAuthor(author.getString("name"));
